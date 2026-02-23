@@ -1,5 +1,6 @@
 streamlit
 scikit-learn
 langchain
-langchaun-groq
+langchain-groq
 langchain-classic
+
