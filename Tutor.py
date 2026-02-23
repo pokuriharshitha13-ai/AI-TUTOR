@@ -1,5 +1,3 @@
-from turtle import color
-from fastapi import background
 import streamlit as st
 import re
 import sys
@@ -548,4 +546,5 @@ elif page == "📝 Quiz Room":
 
                 evaluation = get_response(eval_prompt, use_memory=False)
                 st.success("### Evaluation Results")
+
                 st.markdown(evaluation)
