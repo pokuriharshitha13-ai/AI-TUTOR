@@ -311,6 +311,72 @@ h1, h2, h3, h4, h5, h6 {{
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(59,130,246,0.35);
 }}
+/* ==========================================
+   EXPLANATION BLOCK PROTECTION
+========================================== */
+
+.explanation-box {{
+    background-color: #0b1220;
+    color: #e2e8f0;
+    border-radius: 10px;
+    padding: 18px;
+    margin-top: 15px;
+    border-left: 5px solid #3b82f6;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    line-height: 1.6;
+    font-size: 15px;
+}}
+
+/* Explanation heading */
+.explanation-box h4 {{
+    color: #38bdf8;
+    margin-bottom: 10px;
+}}
+
+/* Inline code inside explanation */
+.explanation-box code {{
+    background-color: #1e293b;
+    color: #38bdf8;
+    padding: 3px 6px;
+    border-radius: 6px;
+}}
+/* Force table dark theme */
+.explanation-box table {{
+    background-color: #0b1220 !important;
+    color: #e2e8f0 !important;
+}}
+
+.explanation-box th {{
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+    padding: 10px;
+}}
+
+.explanation-box td {{
+    background-color: #0b1220 !important;
+    padding: 10px;
+    border-bottom: 1px solid #1e293b;
+}}
+.explanation-box hr {{
+    border: 0;
+    height: 1px;
+    background: #1e293b;
+    margin: 20px 0;
+}}
+.explanation-box pre {{
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+    padding: 12px;
+    border-radius: 8px;
+    overflow-x: auto;
+}}
+
+.explanation-box code {{
+    background-color: #1e293b !important;
+    color: #38bdf8 !important;
+    padding: 3px 6px;
+    border-radius: 6px;
+}}
 
 /* ======================================================
    MAIN INPUTS
@@ -509,6 +575,22 @@ elif page == "📝 Quiz Room":
     topic = st.text_input("Enter topic for your quiz:")
 
     if st.button("Generate Quiz") and topic:
+
+        with st.spinner("Creating your quiz..."):
+
+            if quiz_type == "Multiple-Choice Questions":
+                quiz_prompt = (
+                    f"Generate a new set of 5 multiple-choice questions on {topic} "
+                    f"for a {level} learner in {subject}. "
+                    f"Each question should have 4 options labeled A, B, C, and D. "
+                    f"Do not provide answers."
+                )
+            else:
+                quiz_prompt = (
+                    f"Generate a new set of 5 fill in the blank questions on {topic} "
+                    f"for a {level} learner in {subject}. "
+                    f"Do not provide answers."
+                )
         with st.spinner("Creating your quiz..."):
 
             if quiz_type == "Multiple-Choice Questions":
@@ -529,7 +611,10 @@ elif page == "📝 Quiz Room":
             st.session_state.last_topic = topic
 
     if st.session_state.quiz_data:
-        st.info(st.session_state.quiz_data)
+        st.markdown(
+    f'<div class="explanation-box">{st.session_state.quiz_data}</div>',
+    unsafe_allow_html=True
+)
 
         ans = st.text_area("Write your answers / code here:",height=150)
 
@@ -545,6 +630,8 @@ elif page == "📝 Quiz Room":
                 )
 
                 evaluation = get_response(eval_prompt, use_memory=False)
-                st.success("### Evaluation Results")
 
-                st.markdown(evaluation)
+                st.markdown(
+                    f'<div class="explanation-box">{evaluation}</div>',
+                    unsafe_allow_html=True
+)
